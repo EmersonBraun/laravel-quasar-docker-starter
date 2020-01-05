@@ -1,4 +1,8 @@
 #!/bin/bash
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 function CheckUser () {
    USER_ID=$(/usr/bin/id -u)
    return $USER_ID
@@ -26,7 +30,7 @@ function CheckOptions () {
    elif [ $1 = "down" ]; then
       DownServer
    else
-      echo -e "$1 \e[31mit's an invalid option"
+      echo -e "$1 ${RED}it's an invalid option${NC}"
       exit 1
    fi
 }
@@ -35,18 +39,10 @@ echo -e "\e[32mStarting script, please wait ..."
  
 CheckUser
 if [ $? -ne "0" ]; then
-   echo -e "nYou are not \e[31mroot, run as superuser!n"
+   echo -e "${RED}You are not root, run as superuser!${NC}"
    exit 1
 fi
- 
 
-echo -e "\e[32mYou must enter one of the following parameters to perform the functions: "
-echo -e "up"
-echo -e "down"
-read -p "Option: " op
-
-CheckOptions $op
-exit 1
-
+CheckOptions $1
 #/usr/bin/clear
  
