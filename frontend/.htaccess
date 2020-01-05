@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{DOCUMENT_ROOT}/frontend/$1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/frontend/$1 -d [OR]
+RewriteCond %{DOCUMENT_ROOT}/frontend/$1 -l
+RewriteRule (?!^frontend/)^(.*)$ /frontend/dist/spa/$1 [R=302,L,NC]

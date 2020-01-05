@@ -1,0 +1,13 @@
+# Frontend
+version: '2'
+
+services:
+  production-server:
+    image: nginx:stable-alpine
+    container_name: frontend-server
+    volumes:
+      - ./dist/spa:/usr/share/nginx/html
+      # Configuração do proxy reverso
+      #- ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 9001:80

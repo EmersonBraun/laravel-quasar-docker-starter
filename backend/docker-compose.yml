@@ -1,0 +1,70 @@
+# backend
+# compose syntax version.
+version: "3.6"
+
+# services declaration.
+services:
+  # MySQL
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    ports:
+      - target: 3306
+        published: 3308
+  # Redis
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - target: 6379
+        published: 6380
+  # Web Application
+  web:
+    image: ambientum/php:7.3-nginx
+    volumes:
+      - .:/var/www/app
+      - dot-config:/home/ambientum/.config
+      - dot-cache:/home/ambientum/.cache
+      - dot-local:/home/ambientum/.local
+      - dot-composer:/home/ambientum/.composer
+    environment:
+      - FRAMEWORK=laravel
+      - XDEBUG_ENABLED=false
+      - OPCACHE_MODE=normal
+      - PHP_MEMORY_LIMIT=256M
+    ports:
+      - target: 8080
+        published: 8001
+      - target: 8083
+        published: 8003
+    links:
+      - mysql
+      - redis
+
+# volumes declaration.
+volumes:
+  # mysql-data
+  mysql-data:
+    driver: local
+  # redis-data
+  redis-data:
+    driver: local
+  # dot-config
+  dot-config:
+    driver: local
+  # dot-cache
+  dot-cache:
+    driver: local
+  # dot-local
+  dot-local:
+    driver: local
+  # dot-composer
+  dot-composer:
+    driver: local
