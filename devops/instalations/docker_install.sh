@@ -5,7 +5,12 @@ NC='\033[0m' # No Color
 
 function HasDocker () {
     HAS_DOCKER=$(docker -v)
-    return $HAS_DOCKER
+    if [ $HAS_DOCKER -ne 0 ]; then
+       echo -e "${RED}Not has Docker${NC}" 
+       InstallDocker
+    else
+        echo -e "${GREEN}Has instaled Docker${NC}"
+    fi
 }
 
 function InstallDocker () {
@@ -24,7 +29,12 @@ function InstallDocker () {
 
 function HasDockerCompose() {
     HAS_DOCKER_COMPOSE=$(docker-compose --version)
-    return $HAS_DOCKER_COMPOSE
+    if [ $HAS_DOCKER_COMPOSE -ne 0 ]; then
+        echo -e "${RED}Not has docker-compose${NC}"
+        InstallDockerCompose
+    else
+        echo -e "${GREEN}Has docker-compose instaled${NC}"
+    fi
 }
 
 function RemoveOlderVersions() {
@@ -45,13 +55,4 @@ function InstallDockerCompose() {
 }
 
 HasDocker
-if [ $? -ne "0" ]; then
-    echo -e "${GREEN}Not has Docker${NC}"
-    InstallDocker
-fi
-
 HasDockerCompose
-if [ $? -ne "0" ]; then
-    echo -e "${GREEN}Not has docker-compose${NC}"
-    InstallDockerCompose
-fi

@@ -35,7 +35,7 @@ function CheckOptions () {
    fi
 }
  
-echo -e "\e[32mStarting script, please wait ..."
+echo -e "${GREEN}Up containers, please wait ...${NC}"
  
 CheckUser
 if [ $? -ne "0" ]; then
